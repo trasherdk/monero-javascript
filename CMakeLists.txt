@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(monero-cpp-library-wasm)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++11")
 
 #find_package(Threads)
 #find_package(Backtrace)
@@ -120,11 +120,11 @@ set_target_properties(
     ${BOOST}/lib/libboost_regex.a
 )
 
-#add_library(boost_atomic STATIC IMPORTED)
-#set_target_properties(
-    #boost_atomic PROPERTIES IMPORTED_LOCATION
-    #${BOOST}/lib/libboost_atomic.a
-#)
+add_library(boost_atomic STATIC IMPORTED)
+set_target_properties(
+    boost_atomic PROPERTIES IMPORTED_LOCATION
+    ${BOOST}/lib/libboost_atomic.a
+)
 
 ####################
 # Source files
@@ -298,7 +298,11 @@ set (
 -s EXIT_RUNTIME=0 \
 -s ASYNCIFY=1 \
 -s 'ASYNCIFY_IMPORTS=[\"js_send_json_request\",\"js_send_binary_request\",\"emscripten_sleep\"]' \
+-s USE_PTHREADS=1 \
+-s PTHREAD_POOL_SIZE=20 \
+-s PROXY_TO_PTHREAD=1 \
 -s PRECISE_F32=1 \
+-s USE_BOOST_HEADERS=1 \
 -s DISABLE_EXCEPTION_CATCHING=0 \
 -s EXCEPTION_DEBUG=1 \
 -s DEMANGLE_SUPPORT=1 \
@@ -332,7 +336,7 @@ set(
     EMCC_LINKER_FLAGS__WASM
     "${EMCC_LINKER_FLAGS___BASE} \
 -s WASM=1 \
--s ALLOW_MEMORY_GROWTH=1 \
+-s ALLOW_MEMORY_GROWTH=0 \
 --post-js ${CMAKE_CURRENT_LIST_DIR}/src/module-post.js \
 "
     # -g \
@@ -365,7 +369,6 @@ target_link_libraries(
     boost_serialization
     boost_filesystem
     boost_regex
-    #boost_atomic
     #
     ${log-lib}
 )

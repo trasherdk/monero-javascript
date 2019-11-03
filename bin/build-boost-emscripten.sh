@@ -65,6 +65,7 @@ HOST_NCORES=$(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1
   variant=release            \
   stage                      \
   --stagedir="$INSTALL_PATH" \
+  threading=multi \
   2>&1
 
 unset NO_BZIP2
