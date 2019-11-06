@@ -120,11 +120,11 @@ set_target_properties(
     ${BOOST}/lib/libboost_regex.a
 )
 
-add_library(boost_atomic STATIC IMPORTED)
-set_target_properties(
-    boost_atomic PROPERTIES IMPORTED_LOCATION
-    ${BOOST}/lib/libboost_atomic.a
-)
+#add_library(boost_atomic STATIC IMPORTED)
+#set_target_properties(
+    #boost_atomic PROPERTIES IMPORTED_LOCATION
+    #${BOOST}/lib/libboost_atomic.a
+#)
 
 ####################
 # Source files
@@ -299,9 +299,10 @@ set (
 -s ASYNCIFY=1 \
 -s 'ASYNCIFY_IMPORTS=[\"js_send_json_request\",\"js_send_binary_request\",\"emscripten_sleep\"]' \
 -s USE_PTHREADS=1 \
--s PTHREAD_POOL_SIZE=20 \
+-s PTHREAD_POOL_SIZE=10 \
 -s PROXY_TO_PTHREAD=1 \
 -s PRECISE_F32=1 \
+-s EVAL_CTORS=0 \
 -s USE_BOOST_HEADERS=1 \
 -s DISABLE_EXCEPTION_CATCHING=0 \
 -s EXCEPTION_DEBUG=1 \
@@ -369,6 +370,7 @@ target_link_libraries(
     boost_serialization
     boost_filesystem
     boost_regex
+    #boost_atomic
     #
     ${log-lib}
 )
