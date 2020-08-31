@@ -13,6 +13,8 @@ SRC_PATH="$(pwd)/$SRC_DIR"
 INSTALL_PATH="$(pwd)/$INSTALL_DIR"
 JAM_CONFIG_PATH="$(pwd)/configs/$PLATFORM.jam"
 
+[ ! -d ${INSTALL_PATH} ] && mkdir -p ${INSTALL_PATH}
+
 [ ! -d ${SRC_PATH} -o $# -ge 1 ] \
   && {
     case "$1" in
