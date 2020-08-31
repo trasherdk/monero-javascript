@@ -16,7 +16,7 @@
 
 # build monero-core translations directory
 cd ./external/monero-cpp/external/monero-core || exit 1
-make release-static -j8		# don't exit because this will build translations directory even if build fails
+make release-static -j2		# don't exit because this will build translations directory even if build fails
 cd ../../../../ || exit 1
 
 # build boost
